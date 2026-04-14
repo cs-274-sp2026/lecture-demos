@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h> // for exit() call
 
 // Functions have:
 // 1. A return type (void in loop demo indicates it has no return value)
@@ -69,7 +70,11 @@ double volume_of_sphere(double radius) {
 
 //Recursive function
 int factorial(int n) {
-	if( n == 1 ) {
+	if( n < 0 ) {
+		printf("Error, n needs to be > 0\n");
+		exit(-1);
+		// return 0; // be careful -- need to make sure you see the error printed 
+	} else if((n == 0) || ( n == 1 )) {
 		return 1;
 	} else {
 		return n * factorial(n-1);
@@ -92,6 +97,7 @@ int main() {
 	printf("Volume = %f\n", volume_of_sphere(radius));
 	printf("Volume = %f\n", volume);
 	foo(1,2);
-	loopdemo(2);
+	//loopdemo(2);
+	printf("Factorial result: %d\n", factorial(3));
 	return 0;
 }
