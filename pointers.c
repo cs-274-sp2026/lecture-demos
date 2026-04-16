@@ -67,12 +67,59 @@ int main() {
 
 	// This will cause an error. -Wall will pick it up.
 	// Don't store pointers to local variables and return them when the
-	// function ends.
+	// function ends. This will produce a segmentation fault when you
+	// dereference ptr2.
+	
+	// The Stack: a special place in memory where automatic variables are
+	// stored. Everything on the stack is freed when the scope ends.
+	// This means any pointer to an automatic variable will point to 
+	// cleaned up memory after the scope ends. Don't use these dangling 
+	// pointers. Do not dereference dangling pointers. This will cause
+	// a "use after free" error.
+	//
+	
 	//int* ptr2 = buggy_function();
-	//printf("Buggy function return value: %p\n",	ptr2);
+	//printf("Value at ptr: %d\n", *ptr2);
 	
 	int y = 2;
-	int* p1 = &y;
-	int** p2 = &p1; // This is a pointer to a pointer. It is allowed.
+	//int* p1 = &y;
+	//int** p2 = &p1; // This is a pointer to a pointer. It is allowed
+	
+	// The const keyword indicates the value does not change
+	// e.g. const int pi = 3.141; // means this variable cannot be changed
+	// Const can be applied to pointers. It can mean 2 different things.
+	// 1. Constant pointer: you cannot modify the memory address pointed to
+	//    by the pointer.
+	//
+	
+	x = 5;
+	int* const const_ptr = &x;
+	// const_ptr = &y; // syntax error
+	
+	printf("x = %d\n", *const_ptr);
+	*const_ptr = 42; // This is ok
+	printf("x = %d\n", *const_ptr);
+
+	// 2. Constant value pointed at by the pointer: underlying value at the
+	//    memory address cannot change.
+	//
+	
+	const int* pointer_to_const = &x;
+	//int const* pointer_to_const = &x; // this is allowed and does the same thing
+	//*pointer_to_const = 42; // this is a syntax error because you are changing
+							// the value through the pointer_to_const variable
+	x = 42; // this is ok 
+	pointer_to_const = &y; // this is ok
+	int* pointer_to_const2 = &x;
+	*pointer_to_const2 = 42; // this is ok
+
+	// 3. You can also have a constant pointer to a constant value
+	const int* const ptr = &x;
+	//ptr = &y; // syntax error
+	//*ptr = 42; // syntax error
+	
+
+	// You are not allowed to cast const pointers to non-const pointers
+	// int* non_const_ptr = (int*)pointer_to_const; // syntax error
 }
 	
