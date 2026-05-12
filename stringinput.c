@@ -21,6 +21,7 @@ int main() {
 	// from the terminal)
 	// getline() will dynamically allocate an array on the heap to store
 	// the line typed in by the user and adds a null terminator for the string.
+	//
 	// Returns the length of the C string without the NULL terminator. This is
 	// If getline fails, it returns -1 (e.g. if you don't have enough memory
 	// on the heap)
@@ -30,7 +31,23 @@ int main() {
 		printf("Error on getline\n");
 		exit(1);
 	}
-	printf("%s\n", line);
+	
+	// One option to get rid of extra newline:
+	// line[len-1]='\0'; // You can do this on some architectures
+	
+	// A better but clumsier way to get rid of the extra newline:
+	if( line[len-1] == '\n') {
+		line[len-1] = '\0';
+	}
+	if( line[len-2] == '\r') {
+		line[len-2] = '\0';
+	}
+	printf("%s\n", line); // Another option: could remove the \n to avoid 2 
+						  // newlines
 	free(line); // remember to free this!
+
+	// Another option for the line variable (1st arg):
+	// Could dynamically allocate memory on the heap and pass it in.
+	// If there isn't enough space, getline will reallocate memory if needed.
 	return 0;
 }
